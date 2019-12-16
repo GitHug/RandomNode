@@ -1,3 +1,29 @@
+class MyBinaryTree {
+  constructor() {
+    this.root = null
+  }
+
+  size () {
+    return this.root ? this.root.size : 0
+  }
+
+  getRandomNode() {
+    if (!this.root) return null
+
+    const i = this._getRandomInt(this.size())
+    return this.root.getIthNode(i)
+  }
+
+  insertInOrder(value) {
+    if (!this.root) this.root = new TreeNode(value)
+    else this.root.insertInOrder(value)
+  }
+
+  _getRandomInt(max) {
+    return Math.floor(Math.random() * max)
+  }
+}
+
 class TreeNode {
   constructor(value) {
     this.value = value
@@ -6,21 +32,16 @@ class TreeNode {
     this.size = 1
   }
 
-  getRandomNode() {
+  getIthNode(i) {
     const leftSize = this.left ? this.left.size : 0
-    const index = this._getRandomInt(this.size)
 
-    if (index < leftSize) {
-      return this.left.getRandomNode()
-    } else if (index === leftSize) {
+    if (i < leftSize) {
+      return this.left.getIthNode(i)
+    } else if (i === leftSize) {
       return this
     } else {
-      return this.right.getRandomNode()
+      return this.right.getIthNode(i - (leftSize + 1))
     }
-  }
-
-  _getRandomInt(max) {
-    return Math.floor(Math.random() * max)
   }
 
   insertInOrder(value) {
@@ -41,7 +62,8 @@ class TreeNode {
   }
 }
 
-const tree = new TreeNode(7)
+const tree = new MyBinaryTree()
+tree.insertInOrder(7)
 tree.insertInOrder(5)
 tree.insertInOrder(6)
 tree.insertInOrder(4)
